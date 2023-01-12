@@ -1,0 +1,113 @@
+FCDR DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+  CallDetailRecord ::= SEQUENCE{
+    origAddress [0] AddressInformation OPTIONAL,
+    recipAddress [2] AddressInformation OPTIONAL,
+    msisdn [3] NumericString OPTIONAL,
+    submitDate [4] Date OPTIONAL,
+    submitTime [5] Time OPTIONAL,
+    status [6] Status OPTIONAL,
+    terminDate [7] Date OPTIONAL,
+    terminTime [8] Time OPTIONAL,
+    lengthOfMessage [9] MessageLength OPTIONAL,
+    prioIndicator [10] BOOLEAN OPTIONAL,
+    orglSubmitDate [25] Date OPTIONAL,
+    orglSubmitTime [26] Time OPTIONAL,
+    portNumber [33] PortNumber OPTIONAL,
+    origLASN [72] VisibleString OPTIONAL,
+    recipLASN [73] VisibleString OPTIONAL,
+    origMsgID [74] MsgIdentification OPTIONAL,
+    deliveryAttempts [82] DeliveryAttempts OPTIONAL,
+    msgError [87] MessageError OPTIONAL
+  }
+
+  AddressInformation ::= SEQUENCE {
+    ton  [0]  TypeOfNumber OPTIONAL,
+    npi  [1]  NumberingPlanIndicator OPTIONAL,
+    pid  [2]  ProtocolIdentifier OPTIONAL,
+    msisdn [3] NumericString OPTIONAL,
+    msisdnUTF8 [4] UTF8String OPTIONAL
+  }  
+
+  TypeOfNumber ::= ENUMERATED{
+    unknown (0),
+    international (1),
+    national (2),
+    network (3),
+    short (4),
+    alpha (5),
+    abbreviated (6),
+    reserved7 (7)
+  }
+
+  NumberingPlanIndicator ::= INTEGER{
+    unknown (0),
+    telephone (1),
+    reserved2 (2),
+    data (3),
+    telex (4),
+    tcpip (5),
+    landmobile (6),
+    reserved7 (7),
+    national (8),
+    private (9),
+    ermes (10),
+    reserved11 (11),
+    reserved12 (12),
+    reserved13 (13),
+    internet (14),
+    reserved15 (15)
+  }
+
+  ProtocolIdentifier ::= INTEGER{
+    plmn (0),
+    globaltitle (24),
+    faxg3 (34),
+    faxg4 (35),
+    ivr (36),
+    ermes (37),
+    menu (56),
+    pc (57),
+    tap (58),
+    smpp (59),
+    wap (60),
+    ois (61),
+    vms (62),
+    smtp (204)
+  }
+
+  AddressString ::= OCTET STRING (SIZE (1..maxAddressLength)) 
+ 
+  maxAddressLength INTEGER ::= 20
+
+  UTF8String ::= [UNIVERSAL 12] IMPLICIT OCTET STRING
+
+  Date ::= OCTET STRING (SIZE (3)) -- 3 octets [yy][mm][dd]
+
+  Time ::= OCTET STRING (SIZE (3)) -- 3 octets [hh][mm][ss]
+
+  Status ::= ENUMERATED{
+    delivered (0),
+    expired (1),
+    deleted (2),
+    replaced (3),
+    submitted (4),
+    incomplete-submission (5),
+    incomplete-delivery (6),
+    undeliverable (7),
+    passed-on (8),
+    rejected (9),
+    intermediate (10)
+  }  
+
+  MessageLength ::= INTEGER {min (0), max (4096)}
+
+  MsgIdentification ::= VisibleString (SIZE (1..64))
+
+  DeliveryAttempts ::= INTEGER {min (1), max (65535) }
+
+  PortNumber ::= INTEGER
+
+  MessageError ::= INTEGER {min (0), max (65534)}
+  
+END
